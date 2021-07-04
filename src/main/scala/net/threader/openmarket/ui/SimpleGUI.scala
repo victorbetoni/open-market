@@ -21,14 +21,14 @@ case class SimpleGUI(plugin: Plugin, holder: Player, chestName: String, rows: In
     this(plugin, holder, chestName, rows, new ArrayBuffer[GUIItem]())
   }
 
-  def openInventory(player: Player): Unit = {
+  def openInventory(): Unit = {
     this.putItems()
-    player.openInventory(this.inventory)
+    holder.openInventory(this.inventory)
     try Bukkit.getPluginManager.registerEvents(this, this.plugin)
     catch {
       case e: Exception =>
-        player.closeInventory()
-        player.sendMessage("§cThere was an error when trying to register the inventory.")
+        holder.closeInventory()
+        holder.sendMessage("§cThere was an error when trying to register the inventory.")
         e.printStackTrace()
     }
   }
