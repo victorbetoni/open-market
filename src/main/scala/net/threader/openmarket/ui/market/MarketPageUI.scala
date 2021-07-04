@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.mutable.ArrayBuffer
 
-case class MarketPage(items: Seq[MarketItem]) {
+case class MarketPageUI(items: Seq[MarketItem]) {
 
   def build(holder: Player): SimpleGUI = {
     val guiItems = ArrayBuffer[GUIItem]()

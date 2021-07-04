@@ -17,11 +17,18 @@ repositories {
     maven {
         url "https://hub.spigotmc.org/nexus/content/repositories/snapshots"
     }
+    maven {
+        url 'https://jitpack.io'
+    }
+    maven {
+        url "https://repo.codemc.io/repository/maven-public/"
+    }
     mavenCentral()
 }
 
 dependencies {
     compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly "org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT"
     implementation 'org.scala-lang:scala-library:2.13.3'
     implementation 'com.google.guava:guava:30.0-jre'

@@ -7,21 +7,20 @@ import org.bukkit.{Bukkit, Material}
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
-import java.time.format.DateTimeFormatter
-import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.mutable.ArrayBuffer
 
 case class PaymentUI(purchase: Purchase) {
   def build(player: Player): SimpleGUI = {
+    val seller = purchase.item.seller
     val confirm = new ItemStack(Material.LIME_TERRACOTTA)
     val meta = confirm.getItemMeta
     meta.setDisplayName("§a§lCONFIRMAR")
     val lore = meta.getLore
     lore.add("")
     lore.add("§7Confirmando a compra você está ciente que:")
-    lore.add("§7- Você não poderá pedir reembolso")
-    lore.add(s"§7- ${purchase.item.price} de money será sacado da sua conta")
-    lore.add(s"§7- ${purchase.item.price} será depositado na conta de ${purchase.seller.getName}")
+    lore.add("§7- Você não poderá exigir reembolso")
+    lore.add("§7- R$" + purchase.item.price + " será sacado da sua conta")
+    lore.add("§7- R$" + purchase.item.price + " será depositado na conta de " + purchase.item.seller.getName)
     meta.setLore(lore)
     confirm.setItemMeta(meta)
 
@@ -34,6 +33,16 @@ case class PaymentUI(purchase: Purchase) {
     cMeta.setLore(cLore)
     cancel.setItemMeta(cMeta)
 
-    SimpleGUI(OpenMarket.instance, player, "Confirm purchase", 3, ArrayBuffer(GUIItem(11, confirm, p => {}), GUIItem(13, cancel, p => {})))
+    val confirmItem = GUIItem(11, confirm, player => {
+      val result = purchase.perform()
+      if (result._1) {
+        if(seller.isOnline) {
+          seller.getPlayer.sendMessage(s"§a${player.getName} comprou seu(a) ${purchase.item.item.getItemMeta.getDisplayName}!")
+        }
+      }
+      player.sendMessage(result._2)
+    })
+
+    SimpleGUI(OpenMarket.instance, player, "Confirm purchase", 3, ArrayBuffer(confirmItem, GUIItem(13, cancel, p => p.closeInventory())))
   }
 }
