@@ -21,6 +21,7 @@ repositories {
 }
 
 dependencies {
+    compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
     compileOnly "org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT"
     implementation 'org.scala-lang:scala-library:2.13.3'
     implementation 'com.google.guava:guava:30.0-jre'
