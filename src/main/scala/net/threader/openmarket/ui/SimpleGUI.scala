@@ -12,12 +12,12 @@ import org.bukkit.plugin.Plugin
 import java.util.UUID
 import scala.collection.mutable.ArrayBuffer
 
-case class SimpleGUI(plugin: Plugin, holder: Player, chestName: String, rows: Rows.Rows, items: ArrayBuffer[GUIItem]) extends Listener {
+case class SimpleGUI(plugin: Plugin, holder: Player, chestName: String, rows: Int, items: ArrayBuffer[GUIItem]) extends Listener {
 
-  var inventory: Inventory = _
+  var inventory: Inventory = Bukkit.createInventory(null, rows*9, chestName)
   var holderId: UUID = holder.getUniqueId
 
-  def this(plugin: Plugin, holder: Player, chestName: String, rows: Rows.Rows) {
+  def this(plugin: Plugin, holder: Player, chestName: String, rows: Int) {
     this(plugin, holder, chestName, rows, new ArrayBuffer[GUIItem]())
   }
 
