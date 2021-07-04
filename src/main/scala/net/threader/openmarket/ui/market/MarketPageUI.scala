@@ -19,6 +19,7 @@ case class MarketPageUI(items: Seq[MarketItem]) {
       val clonedStack = marketItem.item.clone()
       val lore = clonedStack.getItemMeta.getLore
       lore.add("")
+      lore.add("§7Preço: §a$" + marketItem.price)
       lore.add(s"§7Sendo vendido por: §a${marketItem.seller.getName}")
       lore.add(s"§7Expira em: §a${DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").format(marketItem.expireAt)}h")
       guiItems += GUIItem(index.getAndIncrement(), clonedStack, player => {
