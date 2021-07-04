@@ -25,7 +25,7 @@ case class MarketPageUI(items: Seq[MarketItem]) {
         PaymentUI(Purchase(holder, marketItem)).build(holder).openInventory()
       })
     }
-    SimpleGUI(OpenMarket.instance, holder, "Player Market", 6, guiItems)
+    SimpleGUI(OpenMarket.instance, holder, "Mercado interno", 6, guiItems)
   }
 
 }

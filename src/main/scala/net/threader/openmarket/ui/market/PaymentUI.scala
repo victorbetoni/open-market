@@ -3,7 +3,7 @@ package net.threader.openmarket.ui.market
 import net.threader.openmarket.OpenMarket
 import net.threader.openmarket.model.Purchase
 import net.threader.openmarket.ui.{GUIItem, SimpleGUI}
-import org.bukkit.{Bukkit, Material}
+import org.bukkit.{Bukkit, Material, Sound}
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
@@ -36,9 +36,13 @@ case class PaymentUI(purchase: Purchase) {
     val confirmItem = GUIItem(11, confirm, player => {
       val result = purchase.perform()
       if (result._1) {
+        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f)
         if(seller.isOnline) {
+          seller.getPlayer.playSound(seller.getPlayer.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f)
           seller.getPlayer.sendMessage(s"§a${player.getName} comprou seu(a) ${purchase.item.item.getItemMeta.getDisplayName}!")
         }
+      } else {
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f)
       }
       player.sendMessage(result._2)
     })
