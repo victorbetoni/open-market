@@ -1,23 +1,19 @@
-package net.threader.openmarket.ui
+package net.threader.openmarket.ui.market
 
-import net.arzio.simplegui.SimpleGUI.Rows
-import net.arzio.simplegui.{GUIItem, SimpleGUI}
 import net.threader.openmarket.OpenMarket
 import net.threader.openmarket.model.MarketItem
+import net.threader.openmarket.ui.{GUIItem, Rows, SimpleGUI}
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
-import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.inventory.ItemStack
 
 import java.time.format.DateTimeFormatter
-import java.util
 import java.util.concurrent.atomic.AtomicInteger
-import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 
 case class MarketPage(items: Seq[MarketItem]) {
 
   def build(holder: Player): SimpleGUI = {
-    val guiItems = new util.ArrayList[GUIItem]()
+    val guiItems = ArrayBuffer[GUIItem]()
     items foreach { marketItem =>
       val index = new AtomicInteger(9)
       val seller = Bukkit.getOfflinePlayer(marketItem.holder)
@@ -26,11 +22,11 @@ case class MarketPage(items: Seq[MarketItem]) {
       lore.add("")
       lore.add(s"§7Sendo vendido por: §a${seller.getName}")
       lore.add(s"§7Expira em: §a${DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").format(marketItem.expireAt)}h")
-      guiItems.add(new GUIItem(clonedStack, index.getAndIncrement(), (event: InventoryClickEvent, player: Player) => {
+      guiItems += GUIItem(index.getAndIncrement(), clonedStack, player => {
         //Perform confirmation, then transaction
-      }))
+      })
     }
-    new SimpleGUI(OpenMarket.instance, holder, "Player Market", Rows.SIX, guiItems)
+    SimpleGUI(OpenMarket.instance, holder, "Player Market", Rows.SIX, guiItems)
   }
 
 }

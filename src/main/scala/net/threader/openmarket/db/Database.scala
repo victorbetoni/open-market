@@ -1,10 +1,9 @@
 package net.threader.openmarket.db
 
 import java.io.{BufferedReader, InputStreamReader}
-import java.sql.{Connection, DriverManager, ResultSet, SQLException}
+import java.sql.{Connection, DriverManager, SQLException}
 import java.util
-import java.util.{Arrays, Objects, Properties}
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.{Objects, Properties}
 import scala.concurrent.ExecutionContext
 
 object Database {

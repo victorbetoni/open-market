@@ -1,6 +1,5 @@
 package net.threader.openmarket.model
 
-import com.google.gson.Gson
 import org.bukkit.inventory.ItemStack
 
 import java.time.LocalDateTime

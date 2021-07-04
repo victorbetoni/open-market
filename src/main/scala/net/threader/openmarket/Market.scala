@@ -1,15 +1,14 @@
 package net.threader.openmarket
 
-import com.google.common.collect.{ArrayListMultimap, Multimap, Multimaps}
+import com.google.common.collect.{ArrayListMultimap, Multimap}
 import net.threader.openmarket.db.Database
 import net.threader.openmarket.model.MarketItem
 import net.threader.openmarket.util.Util
 import org.bukkit.Bukkit
-import org.bukkit.inventory.ItemStack
 
-import java.sql.{Connection, PreparedStatement, Timestamp}
+import java.sql.{Connection, Timestamp}
 import java.util.UUID
-import scala.concurrent.{ExecutionContext, blocking}
+import scala.concurrent.ExecutionContext
 import scala.util.Using
 
 object Market {
