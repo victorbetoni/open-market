@@ -18,24 +18,23 @@ import java.util.Date
 object Market {
   implicit val ec = ExecutionContext
   val cached: mutable.LinkedHashMap[UUID, MarketItem] = mutable.LinkedHashMap[UUID, MarketItem]()
+  val itemsOwner: Multimap[UUID, MarketItem] = ArrayListMultimap.create()
   val itemBox: mutable.HashMap[UUID, MarketItem] = mutable.HashMap[UUID, MarketItem]()
   val formatter = new DateTimeFormatter("dd-MM-yyyy HH:mm")
 
   def load(): Unit = {
     cached.clear()
-    Using(Database.connection.createStatement().executeQuery("SELECT * FROM market")) { rs =>
+    itemsOwner.clear()
+    Using(Database.connection.createStatement().executeQuery("SELECT * FROM market_items")) { rs =>
       while(rs.next()) {
         val holder = UUID.fromString(rs.getString("holder"))
-        val item = rs.getString("item")
-        val query = s"SELECT * FROM market_items WHERE unique_id = $item"
-        Using(Database.connection.createStatement().executeQuery(query)) { rs =>
-          if(rs.next()) {
-            val itemStack = Util.fromB64(rs.getString("item"))
-            val date = rs.getDate("expire_at")
-            val price = rs.getDouble("price")
-            cached.put(holder, MarketItem(Bukkit.getOfflinePlayer(holder),UUID.fromString(item), itemStack, price, new Timestamp(date.getTime).toLocalDateTime))
-          }
-        }
+        val id = UUID.fromString(rs.getString("id"))
+        val itemStack = Util.fromB64(rs.getString("item"))
+        val date = rs.getDate("expire_at")
+        val price = rs.getDouble("price")
+        val item = MarketItem(Bukkit.getOfflinePlayer(holder), id, itemStack, price, new Timestamp(date.getTime).toLocalDateTime)
+        cached.put(id, item)
+        itemsOwner.put(holder, item)
       }
     }
   }
@@ -48,16 +47,12 @@ object Market {
 
   def add(user: UUID, item: MarketItem): Unit = asynConnection { conn =>
     cached.put(user, item)
-    Using(conn.prepareStatement("INSERT INTO market_items VALUES (?, ?, ?, ?)")) { statement =>
-      statement.setString(1, item.id.toString)
-      statement.setString(2, Util.toB64(item.item))
-      statement.setDouble(3, item.price)
-      statement.setDate(4, Date.from(item.expireAt.atZone(ZoneId.systemDefault()).toInstant).asInstanceOf[java.sql.Date])
-      statement.executeUpdate()
-    }
-    Using(conn.prepareStatement("INSERT INTO market VALUES (?, ?)")) { statement =>
+    Using(conn.prepareStatement("INSERT INTO market_items VALUES (?, ?, ?, ?, ?)")) { statement =>
       statement.setString(1, user.toString)
       statement.setString(2, item.id.toString)
+      statement.setString(3, Util.toB64(item.item))
+      statement.setDouble(4, item.price)
+      statement.setDate(5, Date.from(item.expireAt.atZone(ZoneId.systemDefault()).toInstant).asInstanceOf[java.sql.Date])
       statement.executeUpdate()
     }
   }

@@ -54,7 +54,7 @@ class MarketCommand extends CommandExecutor {
       Market.add(player.getUniqueId, marketItem)
       return false
     }
-    return true
+    true
   }
 
   def isDoubleNumber(s: String): Boolean = (allCatch opt s.toDouble).isDefined
