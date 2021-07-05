@@ -16,10 +16,10 @@ case class MarketUI(player: Player, initialPage: Int) {
   var currentPage: MarketPageUI = _
 
   var count = new AtomicInteger(0)
-  Market.cached forEach { (seller, item) =>
+  Market.cached foreach { item =>
     var items = ArrayBuffer[MarketItem]()
-    if (count.incrementAndGet() > 36) {
-      items += item
+    if (count.getAndIncrement() > 28) {
+      items += item._2
     } else {
       pages.add(MarketPageUI(player, this, items))
       items = new ArrayBuffer[MarketItem]()

@@ -15,10 +15,16 @@ import scala.collection.mutable.ArrayBuffer
 case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[MarketItem]) {
 
   val guiItems = ArrayBuffer[GUIItem]()
-  val glassIndexes = Seq(0, 1, 2, 3, 5, 6, 7, 8, 45, 46, 47, 51, 52, 53)
+  val glassIndexes = Seq(0, 1, 2, 3, 5, 6, 7, 8, 9, 18, 27, 36, 45, 46, 47, 51, 52, 53)
+  val itemIndexes = Seq(10, 11, 12, 13, 14, 15, 16,
+                        19, 20, 21, 22, 23, 24, 25,
+                        28, 29, 30, 31, 32, 33, 34,
+                        37, 38, 39, 40, 41, 42, 43)
+  val itemIterator = itemIndexes.iterator
+
 
   items foreach { marketItem =>
-    val index = new AtomicInteger(9)
+    val index = itemIterator.next()
     val clonedStack = marketItem.item.clone()
     val meta = clonedStack.getItemMeta
     val lore = meta.getLore
@@ -28,7 +34,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
     lore.add(s"§7Expira em: §a${DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").format(marketItem.expireAt)}h")
     meta.setLore(lore)
     clonedStack.setItemMeta(meta)
-    guiItems += GUIItem(index.getAndIncrement(), clonedStack, player => PaymentUI(player, Purchase(player, marketItem)).open())
+    guiItems += GUIItem(index, clonedStack, player => PaymentUI(player, Purchase(player, marketItem)).open())
   }
 
   val glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE)

@@ -2,6 +2,7 @@ package net.threader.openmarket
 
 import net.milkbowl.vault.economy.Economy
 import net.threader.openmarket.OpenMarket.{_economy, _openMarket, log}
+import net.threader.openmarket.command.MarketCommand
 import org.bukkit.plugin.java.JavaPlugin
 
 import java.util.logging.Logger
@@ -17,6 +18,7 @@ object OpenMarket {
 class OpenMarket extends JavaPlugin {
   override def onEnable(): Unit = {
     _openMarket = this
+    getCommand("market").setExecutor(new MarketCommand)
     if (!setupEconomy) {
       log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription.getName))
       getServer.getPluginManager.disablePlugin(this)
