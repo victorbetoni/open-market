@@ -34,7 +34,9 @@ object Market {
   }
 
   def asynConnection(block: Connection => Unit): Unit = {
-    Bukkit.getScheduler.runTaskAsynchronously(OpenMarket.instance, _ => block(Database.connection))
+    Bukkit.getScheduler.runTaskAsynchronously(OpenMarket.instance, new Runnable {
+      override def run(): Unit = block(Database.connection)
+    })
   }
 
   def add(user: UUID, item: MarketItem): Unit = asynConnection { conn =>
