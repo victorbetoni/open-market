@@ -20,7 +20,7 @@ class MarketCommand extends CommandExecutor {
     val player = sender.asInstanceOf[Player]
     if (args.length < 1) {
       val marketGui = MarketUI(player, 0)
-      marketGui.pages.get(marketGui).open()
+      marketGui.openInCurrentIndex()
       return false
     }
     if(args.apply(0) == "sell" || args.apply(0) == "vender") {
@@ -51,7 +51,7 @@ class MarketCommand extends CommandExecutor {
       val selling = player.getItemInHand
       val value = args.apply(1).toDouble
       val marketItem = MarketItem(Bukkit.getOfflinePlayer(player.getUniqueId), UUID.randomUUID(), selling, value, LocalDateTime.now().plusWeeks(1))
-      Market.add(player.getUniqueId, marketItem)
+      Market.instance.add(player.getUniqueId, marketItem)
       return false
     }
     true

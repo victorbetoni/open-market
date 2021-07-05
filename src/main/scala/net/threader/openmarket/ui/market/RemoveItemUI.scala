@@ -40,7 +40,7 @@ case class RemoveItemUI(player: Player, parent: MarketUI, item: MarketItem) {
   val backMeta = back.getItemMeta
   backMeta.setDisplayName("§c§lRETORNAR")
   back.setItemMeta(backMeta)
-  guiItems += GUIItem(31, back, _ => parent.currentPage.open())
+  guiItems += GUIItem(31, back, _ => parent.openInCurrentIndex())
 
   def open(): Unit = SimpleGUI(OpenMarket.instance, player, "Remover item", 4, guiItems)
 }
