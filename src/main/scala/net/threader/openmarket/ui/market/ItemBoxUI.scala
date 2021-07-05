@@ -20,7 +20,7 @@ case class ItemBoxUI(player: Player, parent: MarketUI, items: ArrayBuffer[Market
           player.getInventory.setItem(freeSlot, item.item)
           Market.itemBox.remove(item.id)
           player.closeInventory()
-          parent.currentPage.open()
+          parent.openInCurrentIndex()
         } else {
           player.sendMessage("§cVocê não tem nenhum slot livre no inventário.")
         }

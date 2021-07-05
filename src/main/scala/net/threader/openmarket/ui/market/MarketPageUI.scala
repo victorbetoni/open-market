@@ -52,9 +52,9 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
 
   guiItems += GUIItem(48, previous, player => {
     if(parent.iterator.hasPrevious) {
-      parent.currentPage = parent.iterator.previous()
+      parent.currentIndex = parent.iterator.previousIndex()
       player.closeInventory()
-      parent.currentPage.open()
+      parent.openInCurrentIndex()
     } else {
       player.sendMessage("§cNenhuma pagina encontrada")
     }
@@ -67,9 +67,9 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
 
   guiItems += GUIItem(48, next, player => {
     if(parent.iterator.hasNext) {
-      parent.currentPage = parent.iterator.next()
+      parent.currentIndex = parent.iterator.nextIndex()
       player.closeInventory()
-      parent.currentPage.open()
+      parent.openInCurrentIndex()
     } else {
       player.sendMessage("§cNenhuma pagina encontrada")
     }

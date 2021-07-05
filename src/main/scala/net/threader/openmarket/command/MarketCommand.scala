@@ -20,7 +20,7 @@ class MarketCommand extends CommandExecutor {
     val player = sender.asInstanceOf[Player]
     if (args.length < 1) {
       val marketGui = MarketUI(player, 0)
-      marketGui.currentPage.open()
+      marketGui.pages.get(marketGui).open()
       return false
     }
     if(args.apply(0) == "sell" || args.apply(0) == "vender") {
