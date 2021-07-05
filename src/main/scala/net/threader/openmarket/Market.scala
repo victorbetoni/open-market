@@ -8,12 +8,14 @@ import org.bukkit.Bukkit
 
 import java.sql.{Connection, Timestamp}
 import java.util.UUID
+import scala.collection.mutable
 import scala.concurrent.ExecutionContext
 import scala.util.Using
 
 object Market {
   implicit val ec = ExecutionContext
-  val cached: Multimap[UUID, MarketItem] = new ArrayListMultimap[UUID, MarketItem]()
+  val cached: mutable.HashMap[UUID, MarketItem] = mutable.HashMap[UUID, MarketItem]()
+  val itemBox: mutable.HashMap[UUID, MarketItem] = mutable.HashMap[UUID, MarketItem]()
 
   def load(): Unit = {
     cached.clear()
@@ -21,12 +23,13 @@ object Market {
       while(rs.next()) {
         val holder = UUID.fromString(rs.getString("holder"))
         val item = rs.getString("item")
-        val query = s"SELECT item, expire_at FROM market_items WHERE unique_id = $item"
+        val query = s"SELECT * FROM market_items WHERE unique_id = $item"
         Using(Database.connection.createStatement().executeQuery(query)) { rs =>
           if(rs.next()) {
             val itemStack = Util.deserialize(rs.getString("item"))
             val date = rs.getDate("expire_at")
-            cached.put(holder, MarketItem(holder, UUID.fromString(item), itemStack, new Timestamp(date.getTime).toLocalDateTime))
+            val price = rs.getDouble("price")
+            cached.put(holder, MarketItem(Bukkit.getOfflinePlayer(holder),UUID.fromString(item), itemStack, price, new Timestamp(date.getTime).toLocalDateTime))
           }
         }
       }

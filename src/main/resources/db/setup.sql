@@ -7,5 +7,6 @@ CREATE TABLE IF NOT EXISTS market(
 CREATE TABLE IF NOT EXISTS market_items(
     unique_id VARCHAR(64) PRIMARY KEY,
     item_stack VARCHAR(300),
+    price DOUBLE,
     expire_at DATE
 );
