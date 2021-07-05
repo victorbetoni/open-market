@@ -53,8 +53,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   guiItems += GUIItem(48, previous, player => {
     if(parent.iterator.hasPrevious) {
       parent.currentIndex = parent.iterator.previousIndex()
-      player.closeInventory()
-      parent.openInCurrentIndex()
+      parent.reopen()
     } else {
       player.sendMessage("§cNenhuma pagina encontrada")
     }
@@ -68,8 +67,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   guiItems += GUIItem(48, next, player => {
     if(parent.iterator.hasNext) {
       parent.currentIndex = parent.iterator.nextIndex()
-      player.closeInventory()
-      parent.openInCurrentIndex()
+      parent.reopen()
     } else {
       player.sendMessage("§cNenhuma pagina encontrada")
     }
@@ -96,5 +94,4 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   guiItems += GUIItem(4, infos, p => {})
 
   def open(): Unit = SimpleGUI(OpenMarket.instance, player, "Mercado interno", 6, guiItems).openInventory()
-
 }

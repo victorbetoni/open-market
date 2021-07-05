@@ -13,7 +13,7 @@ import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 case class MarketUI(player: Player, initialPage: Int) {
   val pages = new util.ArrayList[MarketPageUI]()
   val iterator = pages.listIterator(initialPage)
-  var currentIndex: Int = 0
+  var currentIndex: Int = initialPage
 
   var count = new AtomicInteger(0)
   Market.cached foreach { item =>
@@ -27,4 +27,9 @@ case class MarketUI(player: Player, initialPage: Int) {
   }
 
   def openInCurrentIndex(): Unit = pages.get(currentIndex).open()
+
+  def reopen(): Unit = {
+    player.closeInventory()
+    MarketUI(player, currentIndex).openInCurrentIndex()
+  }
 }
