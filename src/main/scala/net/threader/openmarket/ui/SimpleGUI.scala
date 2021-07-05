@@ -17,7 +17,7 @@ case class SimpleGUI(plugin: Plugin, holder: Player, chestName: String, rows: In
   var inventory: Inventory = Bukkit.createInventory(null, rows*9, chestName)
   var holderId: UUID = holder.getUniqueId
 
-  def this(plugin: Plugin, holder: Player, chestName: String, rows: Int) {
+  def this(plugin: Plugin, holder: Player, chestName: String, rows: Int) = {
     this(plugin, holder, chestName, rows, new ArrayBuffer[GUIItem]())
   }
 

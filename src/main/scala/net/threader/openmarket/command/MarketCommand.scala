@@ -52,7 +52,9 @@ class MarketCommand extends CommandExecutor {
       val value = args.apply(1).toDouble
       val marketItem = MarketItem(Bukkit.getOfflinePlayer(player.getUniqueId), UUID.randomUUID(), selling, value, LocalDateTime.now().plusDays(1))
       Market.add(player.getUniqueId, marketItem)
+      return false
     }
+    return true
   }
 
   def isDoubleNumber(s: String): Boolean = (allCatch opt s.toDouble).isDefined

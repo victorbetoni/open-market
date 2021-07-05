@@ -26,7 +26,7 @@ object Market {
         val query = s"SELECT * FROM market_items WHERE unique_id = $item"
         Using(Database.connection.createStatement().executeQuery(query)) { rs =>
           if(rs.next()) {
-            val itemStack = Util.deserialize(rs.getString("item"))
+            val itemStack = Util.fromB64(rs.getString("item"))
             val date = rs.getDate("expire_at")
             val price = rs.getDouble("price")
             cached.put(holder, MarketItem(Bukkit.getOfflinePlayer(holder),UUID.fromString(item), itemStack, price, new Timestamp(date.getTime).toLocalDateTime))

@@ -81,7 +81,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
 
   guiItems += GUIItem(48, next, _.closeInventory())
 
-  val infos = new ItemStack(Material.SIGN)
+  val infos = new ItemStack(Material.PAINTING)
   val infosMeta = infos.getItemMeta
   infosMeta.setDisplayName("§c§lMERCADO INTERNO")
   infos.setItemMeta(infosMeta)
@@ -93,7 +93,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   infosMeta.setLore(infoLore)
   infos.setItemMeta(infosMeta)
 
-  guiItems += GUIItem(4, infos, _)
+  guiItems += GUIItem(4, infos, p => {})
 
   def open(): Unit = SimpleGUI(OpenMarket.instance, player, "Mercado interno", 6, guiItems).openInventory()
 
