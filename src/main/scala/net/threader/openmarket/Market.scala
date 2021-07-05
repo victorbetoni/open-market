@@ -7,15 +7,19 @@ import net.threader.openmarket.util.Util
 import org.bukkit.Bukkit
 
 import java.sql.{Connection, Timestamp}
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 import scala.collection.mutable
 import scala.concurrent.ExecutionContext
 import scala.util.Using
+import java.util.Date
 
 object Market {
   implicit val ec = ExecutionContext
-  val cached: mutable.HashMap[UUID, MarketItem] = mutable.HashMap[UUID, MarketItem]()
+  val cached: mutable.LinkedHashMap[UUID, MarketItem] = mutable.LinkedHashMap[UUID, MarketItem]()
   val itemBox: mutable.HashMap[UUID, MarketItem] = mutable.HashMap[UUID, MarketItem]()
+  val formatter = new DateTimeFormatter("dd-MM-yyyy HH:mm")
 
   def load(): Unit = {
     cached.clear()
@@ -44,9 +48,16 @@ object Market {
 
   def add(user: UUID, item: MarketItem): Unit = asynConnection { conn =>
     cached.put(user, item)
+    Using(conn.prepareStatement("INSERT INTO market_items VALUES (?, ?, ?, ?)")) { statement =>
+      statement.setString(1, item.id.toString)
+      statement.setString(2, Util.toB64(item.item))
+      statement.setDouble(3, item.price)
+      statement.setDate(4, Date.from(item.expireAt.atZone(ZoneId.systemDefault()).toInstant).asInstanceOf[java.sql.Date])
+      statement.executeUpdate()
+    }
     Using(conn.prepareStatement("INSERT INTO market VALUES (?, ?)")) { statement =>
       statement.setString(1, user.toString)
-      statement.setString(2, item.toString)
+      statement.setString(2, item.id.toString)
       statement.executeUpdate()
     }
   }

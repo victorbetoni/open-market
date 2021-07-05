@@ -7,6 +7,7 @@ import org.bukkit.{Bukkit, Material}
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util
 import java.util.concurrent.atomic.AtomicInteger
@@ -92,7 +93,6 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   infoLore.add("§7de uma semana caso não sejam compradas.")
   infosMeta.setLore(infoLore)
   infos.setItemMeta(infosMeta)
-
   guiItems += GUIItem(4, infos, p => {})
 
   def open(): Unit = SimpleGUI(OpenMarket.instance, player, "Mercado interno", 6, guiItems).openInventory()
