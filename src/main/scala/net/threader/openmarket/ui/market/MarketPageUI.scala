@@ -28,7 +28,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
     lore.add(s"§7Expira em: §a${DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").format(marketItem.expireAt)}h")
     meta.setLore(lore)
     clonedStack.setItemMeta(meta)
-    guiItems += GUIItem(index.getAndIncrement(), clonedStack, player => PaymentUI(Purchase(player, marketItem)).build(player).openInventory())
+    guiItems += GUIItem(index.getAndIncrement(), clonedStack, player => PaymentUI(player, Purchase(player, marketItem)).open())
   }
 
   val glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE)
@@ -45,9 +45,9 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
 
   guiItems += GUIItem(48, previous, player => {
     if(parent.iterator.hasPrevious) {
-      val previous = parent.iterator.previous()
+      parent.currentPage = parent.iterator.previous()
       player.closeInventory()
-      previous.open()
+      parent.currentPage.open()
     } else {
       player.sendMessage("§cNenhuma pagina encontrada")
     }
@@ -60,9 +60,9 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
 
   guiItems += GUIItem(48, next, player => {
     if(parent.iterator.hasNext) {
-      val next = parent.iterator.next()
+      parent.currentPage = parent.iterator.next()
       player.closeInventory()
-      next.open()
+      parent.currentPage.open()
     } else {
       player.sendMessage("§cNenhuma pagina encontrada")
     }
