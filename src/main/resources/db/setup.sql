@@ -1,12 +1,8 @@
-CREATE TABLE IF NOT EXISTS market(
-    holder VARCHAR(64),
-    item VARCHAR(64),
-    PRIMARY KEY (holder, item)
-);
-
 CREATE TABLE IF NOT EXISTS market_items(
-    unique_id VARCHAR(64) PRIMARY KEY,
+    holder VARCHAR(64),
+    unique_id VARCHAR(64),
     item_stack VARCHAR(300),
     price DOUBLE,
-    expire_at DATE
+    expire_at DATE,
+    PRIMARY KEY (holder, item)
 );
