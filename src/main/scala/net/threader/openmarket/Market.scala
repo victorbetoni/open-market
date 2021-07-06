@@ -8,11 +8,10 @@ import org.bukkit.Bukkit
 
 import java.sql.{Connection, Timestamp}
 import java.time.ZoneId
-import java.util.UUID
+import java.util.{Date, UUID}
 import scala.collection.mutable
 import scala.concurrent.ExecutionContext
 import scala.util.Using
-import java.util.Date
 
 object Market {
   implicit val ec = ExecutionContext

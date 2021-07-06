@@ -1,7 +1,7 @@
 package net.threader.openmarket
 
 import net.milkbowl.vault.economy.Economy
-import net.threader.openmarket.OpenMarket.{_economy, _openMarket, log}
+import net.threader.openmarket.OpenMarket.log
 import net.threader.openmarket.command.MarketCommand
 import net.threader.openmarket.db.Database
 import org.bukkit.plugin.java.JavaPlugin

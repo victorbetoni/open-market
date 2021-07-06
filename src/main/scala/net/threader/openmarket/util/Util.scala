@@ -1,12 +1,10 @@
 package net.threader.openmarket.util
 
-import org.bukkit.util.io.BukkitObjectInputStream
-import java.io.ByteArrayInputStream
-import org.bukkit.inventory.ItemStack
-
 import com.google.common.io.BaseEncoding
-import org.bukkit.util.io.BukkitObjectOutputStream
-import java.io.ByteArrayOutputStream
+import org.bukkit.inventory.ItemStack
+import org.bukkit.util.io.{BukkitObjectInputStream, BukkitObjectOutputStream}
+
+import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 
 object Util {
   def toB64(item: ItemStack): String = {

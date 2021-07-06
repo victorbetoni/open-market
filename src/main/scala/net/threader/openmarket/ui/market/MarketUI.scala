@@ -1,14 +1,12 @@
 package net.threader.openmarket.ui.market
 
-import org.bukkit.entity.Player
 import net.threader.openmarket.Market
 import net.threader.openmarket.model.MarketItem
-import net.threader.openmarket.ui.SimpleGUI
+import org.bukkit.entity.Player
 
 import java.util
 import java.util.concurrent.atomic.AtomicInteger
-import scala.collection.mutable
-import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+import scala.collection.mutable.ArrayBuffer
 
 case class MarketUI(player: Player, initialPage: Int) {
   val pages = new util.ArrayList[MarketPageUI]()

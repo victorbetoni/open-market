@@ -3,9 +3,9 @@ package net.threader.openmarket.command
 import net.threader.openmarket.Market
 import net.threader.openmarket.model.MarketItem
 import net.threader.openmarket.ui.market.MarketUI
-import org.bukkit.{Bukkit, Material}
 import org.bukkit.command.{Command, CommandExecutor, CommandSender}
 import org.bukkit.entity.Player
+import org.bukkit.{Bukkit, Material}
 
 import java.time.LocalDateTime
 import java.util.UUID

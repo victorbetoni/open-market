@@ -3,12 +3,10 @@ package net.threader.openmarket.db
 import net.threader.openmarket.OpenMarket
 
 import java.io.{BufferedReader, File, InputStreamReader}
-import java.sql.Connection
+import java.sql.{Connection, DriverManager, SQLException}
 import java.util
 import java.util.Objects
 import scala.concurrent.ExecutionContext
-import java.sql.DriverManager
-import java.sql.SQLException
 
 object Database {
   private var _connection: Connection = _

@@ -3,9 +3,9 @@ package net.threader.openmarket.ui.market
 import net.threader.openmarket.OpenMarket
 import net.threader.openmarket.model.Purchase
 import net.threader.openmarket.ui.{GUIItem, SimpleGUI}
-import org.bukkit.{Bukkit, Material, Sound}
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.{Material, Sound}
 
 import scala.collection.mutable.ArrayBuffer
 

@@ -4,7 +4,6 @@ import net.threader.openmarket.Market
 import net.threader.openmarket.model.MarketItem
 import net.threader.openmarket.ui.GUIItem
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 
 import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.mutable.ArrayBuffer

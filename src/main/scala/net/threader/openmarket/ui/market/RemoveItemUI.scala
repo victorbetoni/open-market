@@ -6,7 +6,6 @@ import net.threader.openmarket.ui.{GUIItem, SimpleGUI}
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import org.bukkit.plugin.SimplePluginManager
 
 import java.util
 import scala.collection.mutable.ArrayBuffer
