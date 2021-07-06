@@ -16,7 +16,7 @@ import scala.collection.mutable.ArrayBuffer
 case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[MarketItem]) {
 
   val guiItems = ArrayBuffer[GUIItem]()
-  val glassIndexes = Seq(0, 1, 2, 3, 5, 6, 7, 8, 9, 18, 27, 36, 45, 46, 47, 51, 52, 53)
+  val glassIndexes = Seq(0, 1, 2, 3, 5, 6, 7, 8, 9, 17, 18, 27, 36, 44, 45, 46, 47, 51, 52, 53)
   val itemIndexes = Seq(10, 11, 12, 13, 14, 15, 16,
                         19, 20, 21, 22, 23, 24, 25,
                         28, 29, 30, 31, 32, 33, 34,
