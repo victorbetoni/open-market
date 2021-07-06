@@ -10,15 +10,17 @@ import java.util.logging.Logger
 
 object OpenMarket {
   implicit var log: Logger = Logger.getLogger("Minecraft")
-  implicit var _openMarket: OpenMarket = _
-  implicit var _economy: Economy = _
-  val instance: OpenMarket = _openMarket
-  val economy: Economy = _economy
+  private var _openMarket: OpenMarket = _
+  private var _economy: Economy = _
+
+  implicit def instance: OpenMarket = _openMarket
+  implicit def economy: Economy = _economy
 }
 
 class OpenMarket extends JavaPlugin {
   override def onEnable(): Unit = {
-    _openMarket = this
+    OpenMarket._openMarket = this
+    saveDefaultConfig()
     getCommand("market").setExecutor(new MarketCommand)
     if (!setupEconomy) {
       log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription.getName))
@@ -33,7 +35,7 @@ class OpenMarket extends JavaPlugin {
     if (getServer.getPluginManager.getPlugin("Vault") == null) return false
     val rsp = getServer.getServicesManager.getRegistration(classOf[Economy])
     if (rsp == null) return false
-    _economy = rsp.getProvider
-    _economy != null
+    OpenMarket._economy = rsp.getProvider
+    OpenMarket._economy != null
   }
 }
