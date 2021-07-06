@@ -26,7 +26,7 @@ class OpenMarket extends JavaPlugin {
       return
     }
     Database.connect()
-    Market.instance.load()
+    Market.load()
   }
 
   private def setupEconomy: Boolean = {

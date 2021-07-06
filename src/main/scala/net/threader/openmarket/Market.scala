@@ -1,7 +1,6 @@
 package net.threader.openmarket
 
 import com.google.common.collect.{ArrayListMultimap, Multimap}
-import net.threader.openmarket.Market.{cached, instance, itemsOwner}
 import net.threader.openmarket.db.Database
 import net.threader.openmarket.model.MarketItem
 import net.threader.openmarket.util.Util
@@ -9,7 +8,6 @@ import org.bukkit.Bukkit
 
 import java.sql.{Connection, Timestamp}
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.UUID
 import scala.collection.mutable
 import scala.concurrent.ExecutionContext

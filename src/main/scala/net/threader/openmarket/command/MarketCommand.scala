@@ -51,7 +51,7 @@ class MarketCommand extends CommandExecutor {
       val selling = player.getItemInHand
       val value = args.apply(1).toDouble
       val marketItem = MarketItem(Bukkit.getOfflinePlayer(player.getUniqueId), UUID.randomUUID(), selling, value, LocalDateTime.now().plusWeeks(1))
-      Market.instance.add(player.getUniqueId, marketItem)
+      Market.add(player.getUniqueId, marketItem)
       return false
     }
     true
