@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS market_items(
     item_stack VARCHAR(300),
     price DOUBLE,
     expire_at DATE,
-    PRIMARY KEY (holder, item)
+    PRIMARY KEY (holder, item_stack)
 );
