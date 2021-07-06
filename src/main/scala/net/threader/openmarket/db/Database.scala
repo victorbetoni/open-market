@@ -11,11 +11,11 @@ import java.sql.DriverManager
 import java.sql.SQLException
 
 object Database {
-  var _connection: Connection = _
-  var connection: Connection = if (_connection == null) connect() else _connection
+  private var _connection: Connection = _
+  implicit def connection: Connection = if (_connection == null) connect() else _connection
   implicit val ec: ExecutionContext = ExecutionContext.global
 
-  private def executeScript(): Unit = {
+   def executeScript(): Unit = {
     val fileContent = new StringBuilder
 
     val fileReader = new BufferedReader(new InputStreamReader(
@@ -53,7 +53,7 @@ object Database {
       executeScript()
       return connection
     } catch {
-      case throwables@(_: SQLException | _: IOException) =>
+      case throwables: Throwable =>
         throwables.printStackTrace()
         OpenMarket.instance.getPluginLoader.disablePlugin(OpenMarket.instance)
     }
