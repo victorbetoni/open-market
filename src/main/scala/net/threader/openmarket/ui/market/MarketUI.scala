@@ -15,16 +15,18 @@ case class MarketUI(player: Player, initialPage: Int) {
   val iterator = pages.listIterator(initialPage)
   var currentIndex: Int = initialPage
 
-  var count = new AtomicInteger(0)
+  var items = ArrayBuffer[MarketItem]()
   Market.cached foreach { item =>
-    var items = ArrayBuffer[MarketItem]()
-    if (count.getAndIncrement() > 28) {
+    val count = new AtomicInteger(0)
+    if (count.getAndIncrement() < 28) {
       items += item._2
     } else {
+      count.set(0)
       pages.add(MarketPageUI(player, this, items))
       items = new ArrayBuffer[MarketItem]()
     }
   }
+  pages.add(MarketPageUI(player, this, items))
 
   def openInCurrentIndex(): Unit = pages.get(currentIndex).open()
 
