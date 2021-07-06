@@ -1,6 +1,6 @@
 package net.threader.openmarket.command
 
-import net.threader.openmarket.Market
+import net.threader.openmarket.{ItemBox, Market}
 import net.threader.openmarket.model.MarketItem
 import net.threader.openmarket.ui.market.MarketUI
 import org.bukkit.command.{Command, CommandExecutor, CommandSender}
@@ -29,11 +29,11 @@ class MarketCommand extends CommandExecutor {
         player.sendMessage("§cVocê deve estar com um item na mão!")
         return false
       }
-      if(Market.itemBox.values.exists(_.seller.getUniqueId.equals(player.getUniqueId))) {
+      if(ItemBox.cached.containsKey(player.getUniqueId)) {
         player.sendMessage("§eEsvazie sua item box do mercado antes de vender algo!")
         return false
       }
-      if(Market.itemBox.values.count(_.seller.getUniqueId.equals(player.getUniqueId)) >= 20) {
+      if(Market.cached.values.count(_.seller.getUniqueId.equals(player.getUniqueId)) >= 20) {
         player.sendMessage("§eVocê atingiu o número máximo de itens no mercado (20). Retire alguns ou espere que eles expirem.")
         return false
       }

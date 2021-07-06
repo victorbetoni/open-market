@@ -15,10 +15,8 @@ import scala.concurrent.ExecutionContext
 import scala.util.Using
 
 object Market {
-  implicit val ec = ExecutionContext
   val cached: mutable.LinkedHashMap[UUID, MarketItem] = mutable.LinkedHashMap[UUID, MarketItem]()
   val itemsOwner: Multimap[UUID, MarketItem] = ArrayListMultimap.create()
-  val itemBox: mutable.HashMap[UUID, MarketItem] = mutable.HashMap[UUID, MarketItem]()
 
   def load(): Unit = {
     cached.clear()

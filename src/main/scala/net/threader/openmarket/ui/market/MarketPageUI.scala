@@ -1,7 +1,7 @@
 package net.threader.openmarket.ui.market
 
-import net.threader.openmarket.{Market, OpenMarket}
-import net.threader.openmarket.model.{MarketItem, Purchase}
+import net.threader.openmarket.{ItemBox, Market, OpenMarket}
+import net.threader.openmarket.model.{ItemBoxItem, MarketItem, Purchase}
 import net.threader.openmarket.ui.{GUIItem, SimpleGUI}
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -107,8 +107,8 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   boxLore.add("§7de colocar algum item a venda.")
   itemBoxMeta.setLore(boxLore)
   itemBox.setItemMeta(itemBoxMeta)
-  val itemsInBox = new ArrayBuffer[MarketItem]()
-  Market.itemBox.values.filter(_.seller.getUniqueId.equals(player.getUniqueId)).foreach(itemsInBox += _)
+  val itemsInBox = new ArrayBuffer[ItemBoxItem]()
+  ItemBox.cached.get(player.getUniqueId).forEach(x => itemsInBox += x)
 
   guiItems += GUIItem(26, itemBox, player => ItemBoxUI(player, parent, itemsInBox))
 

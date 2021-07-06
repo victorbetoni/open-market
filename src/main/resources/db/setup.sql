@@ -6,3 +6,9 @@ CREATE TABLE IF NOT EXISTS market_items(
     expire_at DATE,
     PRIMARY KEY (holder, unique_id)
 );
+
+CREATE TABLE IF NOT EXISTS item_box(
+    holder VARCHAR(64),
+    id VARCHAR(64),
+    stack VARCHAR(500)
+);
