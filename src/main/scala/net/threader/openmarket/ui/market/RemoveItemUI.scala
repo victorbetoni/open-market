@@ -23,7 +23,7 @@ case class RemoveItemUI(player: Player, parent: MarketUI, item: MarketItem) {
   retrieve.setItemMeta(meta)
 
   val guiItems = new ArrayBuffer[GUIItem]()
-  guiItems += GUIItem(12, retrieve, player => {
+  guiItems += GUIItem(13, retrieve, player => {
     //TODO Send the item to the item box
   })
 
@@ -42,5 +42,5 @@ case class RemoveItemUI(player: Player, parent: MarketUI, item: MarketItem) {
   back.setItemMeta(backMeta)
   guiItems += GUIItem(31, back, _ => parent.openInCurrentIndex())
 
-  def open(): Unit = SimpleGUI(OpenMarket.instance, player, "Remover item", 4, guiItems)
+  def open(): Unit = SimpleGUI(OpenMarket.instance, player, "Remover item", 4, guiItems).openInventory()
 }
