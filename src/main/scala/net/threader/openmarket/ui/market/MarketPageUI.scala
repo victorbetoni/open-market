@@ -40,7 +40,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
 
   val glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE)
   val glassMeta = glass.getItemMeta
-  glassMeta.setDisplayName("")
+  glassMeta.setDisplayName(" ")
   glass.setItemMeta(glassMeta)
 
   for(index <- glassIndexes) guiItems += GUIItem(index, glass.clone(), _ => {})
@@ -64,7 +64,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   nextMeta.setDisplayName("§e▶")
   next.setItemMeta(nextMeta)
 
-  guiItems += GUIItem(48, next, player => {
+  guiItems += GUIItem(50, next, player => {
     if(parent.iterator.hasNext) {
       parent.currentIndex = parent.iterator.nextIndex()
       parent.reopen()
@@ -78,11 +78,11 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   closeMeta.setDisplayName("§c§lFECHAR")
   close.setItemMeta(closeMeta)
 
-  guiItems += GUIItem(48, next, _.closeInventory())
+  guiItems += GUIItem(49, close, _.closeInventory())
 
   val infos = new ItemStack(Material.PAINTING)
   val infosMeta = infos.getItemMeta
-  infosMeta.setDisplayName("§c§lMERCADO INTERNO")
+  infosMeta.setDisplayName("§a§lMERCADO INTERNO")
   infos.setItemMeta(infosMeta)
   val infoLore = new util.ArrayList[String]()
   infoLore.add("")
