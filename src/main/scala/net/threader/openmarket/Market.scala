@@ -6,10 +6,12 @@ import net.threader.openmarket.model.MarketItem
 import net.threader.openmarket.util.Util
 import org.bukkit.Bukkit
 
-import java.sql.{Connection, Timestamp}
-import java.time.ZoneId
+import java.sql
+import java.sql.{Connection, Date, SQLException, Timestamp}
+import java.time.{LocalDateTime, ZoneId}
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.{Date, UUID}
+import java.util.UUID
 import scala.collection.mutable
 import scala.concurrent.ExecutionContext
 import scala.util.Using
@@ -24,11 +26,11 @@ object Market {
     Using(Database.connection.createStatement().executeQuery("SELECT * FROM market_items")) { rs =>
       while (rs.next()) {
         val holder = UUID.fromString(rs.getString("holder"))
-        val id = UUID.fromString(rs.getString("id"))
+        val id = UUID.fromString(rs.getString("unique_id"))
         val itemStack = Util.fromB64(rs.getString("item_stack"))
-        val date = rs.getDate("expire_at")
+        val date = LocalDateTime.parse(rs.getString("expire_at"), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))
         val price = rs.getDouble("price")
-        val item = MarketItem(Bukkit.getOfflinePlayer(holder), id, itemStack, price, new Timestamp(date.getTime).toLocalDateTime, new AtomicBoolean((false)))
+        val item = MarketItem(Bukkit.getOfflinePlayer(holder), id, itemStack, price, date, new AtomicBoolean(false))
         cached.put(id, item)
         itemsOwner.put(holder, item)
       }
@@ -43,13 +45,16 @@ object Market {
 
   def add(user: UUID, item: MarketItem): Unit = asynConnection { conn =>
     cached.put(user, item)
-    Using(conn.prepareStatement("INSERT INTO market_items VALUES (?, ?, ?, ?, ?)")) { statement =>
+    try {
+      val statement = conn.prepareStatement("INSERT INTO market_items VALUES (?, ?, ?, ?, ?)")
       statement.setString(1, user.toString)
       statement.setString(2, item.id.toString)
       statement.setString(3, Util.toB64(item.item))
       statement.setDouble(4, item.price)
-      statement.setDate(5, Date.from(item.expireAt.atZone(ZoneId.systemDefault()).toInstant).asInstanceOf[java.sql.Date])
+      statement.setString(5, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").format(item.expireAt))
       statement.executeUpdate()
+    } catch {
+      case ex: SQLException => ex.printStackTrace()
     }
   }
 }
