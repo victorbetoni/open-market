@@ -2,5 +2,7 @@ name: OpenMarket
 author: threader
 main: net.threader.openmarket.OpenMarket
 version: 1.0
+depend:
+  - Vault
 commands:
   market:
