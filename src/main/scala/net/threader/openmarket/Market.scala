@@ -8,6 +8,7 @@ import org.bukkit.Bukkit
 
 import java.sql.{Connection, Timestamp}
 import java.time.ZoneId
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.{Date, UUID}
 import scala.collection.mutable
 import scala.concurrent.ExecutionContext
@@ -29,7 +30,7 @@ object Market {
         val itemStack = Util.fromB64(rs.getString("item_stack"))
         val date = rs.getDate("expire_at")
         val price = rs.getDouble("price")
-        val item = MarketItem(Bukkit.getOfflinePlayer(holder), id, itemStack, price, new Timestamp(date.getTime).toLocalDateTime)
+        val item = MarketItem(Bukkit.getOfflinePlayer(holder), id, itemStack, price, new Timestamp(date.getTime).toLocalDateTime, new AtomicBoolean((false)))
         cached.put(id, item)
         itemsOwner.put(holder, item)
       }

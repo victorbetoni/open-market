@@ -108,7 +108,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   itemBoxMeta.setLore(boxLore)
   itemBox.setItemMeta(itemBoxMeta)
   val itemsInBox = new ArrayBuffer[MarketItem]()
-  Market.itemBox.filter(_._2.seller.getUniqueId.equals(player.getUniqueId)).foreach(itemsInBox += _)
+  Market.itemBox.values.filter(_.seller.getUniqueId.equals(player.getUniqueId)).foreach(itemsInBox += _)
 
   guiItems += GUIItem(26, itemBox, player => ItemBoxUI(player, parent, itemsInBox))
 

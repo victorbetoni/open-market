@@ -9,6 +9,7 @@ import org.bukkit.{Bukkit, Material}
 
 import java.time.LocalDateTime
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicBoolean
 import scala.util.control.Exception.allCatch
 
 class MarketCommand extends CommandExecutor {
@@ -50,7 +51,7 @@ class MarketCommand extends CommandExecutor {
       }
       val selling = player.getItemInHand
       val value = args.apply(1).toDouble
-      val marketItem = MarketItem(Bukkit.getOfflinePlayer(player.getUniqueId), UUID.randomUUID(), selling, value, LocalDateTime.now().plusWeeks(1))
+      val marketItem = MarketItem(Bukkit.getOfflinePlayer(player.getUniqueId), UUID.randomUUID(), selling, value, LocalDateTime.now().plusWeeks(1), new AtomicBoolean((false)))
       Market.add(player.getUniqueId, marketItem)
       return false
     }
