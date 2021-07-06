@@ -28,7 +28,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
     val index = itemIterator.next()
     val clonedStack = marketItem.item.clone()
     val meta = clonedStack.getItemMeta
-    val lore = meta.getLore
+    val lore = if (meta.hasLore) meta.getLore else new util.ArrayList[String]()
     lore.add("")
     lore.add("§7Preço: §a$" + marketItem.price)
     lore.add(s"§7Sendo vendido por: §a${marketItem.seller.getName}")
