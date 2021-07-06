@@ -24,7 +24,7 @@ class MarketCommand extends CommandExecutor {
       return false
     }
     if(args.apply(0) == "sell" || args.apply(0) == "vender") {
-      if(player.getItemInHand.getType != Material.AIR) {
+      if(player.getItemInHand.getType == Material.AIR) {
         player.sendMessage("§cVocê deve estar com um item na mão!")
         return false
       }
