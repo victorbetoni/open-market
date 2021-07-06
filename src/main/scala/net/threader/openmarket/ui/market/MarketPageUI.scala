@@ -6,6 +6,7 @@ import net.threader.openmarket.ui.{GUIItem, SimpleGUI}
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 
 import java.time.format.DateTimeFormatter
 import java.util
@@ -19,8 +20,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
                         19, 20, 21, 22, 23, 24, 25,
                         28, 29, 30, 31, 32, 33, 34,
                         37, 38, 39, 40, 41, 42, 43)
-  val itemIterator = itemIndexes.iterator
-
+  val itemIterator: Iterator[Int] = itemIndexes.iterator
 
   items foreach { marketItem =>
     val index = itemIterator.next()
@@ -33,18 +33,24 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
     lore.add(s"§7Expira em: §a${DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").format(marketItem.expireAt)}h")
     meta.setLore(lore)
     clonedStack.setItemMeta(meta)
-    guiItems += GUIItem(index, clonedStack, player => PaymentUI(player, Purchase(player, marketItem)).open())
+    guiItems += GUIItem(index, clonedStack, player => {
+      if(player.getUniqueId.equals(marketItem.seller.getUniqueId)) {
+        RemoveItemUI(player, parent, marketItem).open()
+      } else {
+        PaymentUI(player, Purchase(player, marketItem)).open()
+      }
+    })
   }
 
   val glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE)
-  val glassMeta = glass.getItemMeta
+  val glassMeta: ItemMeta = glass.getItemMeta
   glassMeta.setDisplayName(" ")
   glass.setItemMeta(glassMeta)
 
   for(index <- glassIndexes) guiItems += GUIItem(index, glass.clone(), _ => {})
 
   val previous = new ItemStack(Material.ARROW)
-  val previousMeta = previous.getItemMeta
+  val previousMeta: ItemMeta = previous.getItemMeta
   previousMeta.setDisplayName("§e◀")
   previous.setItemMeta(previousMeta)
 
@@ -58,7 +64,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   })
 
   val next = new ItemStack(Material.ARROW)
-  val nextMeta = next.getItemMeta
+  val nextMeta: ItemMeta = next.getItemMeta
   nextMeta.setDisplayName("§e▶")
   next.setItemMeta(nextMeta)
 
@@ -72,27 +78,27 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   })
 
   val close = new ItemStack(Material.NETHER_BRICK_SLAB)
-  val closeMeta = close.getItemMeta
+  val closeMeta: ItemMeta = close.getItemMeta
   closeMeta.setDisplayName("§c§lFECHAR")
   close.setItemMeta(closeMeta)
 
   guiItems += GUIItem(49, close, _.closeInventory())
 
-  val infos = new ItemStack(Material.PAINTING)
-  val infosMeta = infos.getItemMeta
-  infosMeta.setDisplayName("§a§lMERCADO INTERNO")
-  infos.setItemMeta(infosMeta)
+  val info = new ItemStack(Material.PAINTING)
+  val infoMeta: ItemMeta = info.getItemMeta
+  infoMeta.setDisplayName("§a§lMERCADO INTERNO")
+  info.setItemMeta(infoMeta)
   val infoLore = new util.ArrayList[String]()
   infoLore.add("")
   infoLore.add("§7No mercado interno você pode vender itens pelo")
   infoLore.add("§7seu preço. Todas as mercadorias expiram depois")
   infoLore.add("§7de uma semana caso não sejam compradas.")
-  infosMeta.setLore(infoLore)
-  infos.setItemMeta(infosMeta)
-  guiItems += GUIItem(4, infos, p => {})
+  infoMeta.setLore(infoLore)
+  info.setItemMeta(infoMeta)
+  guiItems += GUIItem(4, info, p => {})
 
   val itemBox = new ItemStack(Material.CHEST)
-  val itemBoxMeta = itemBox.getItemMeta
+  val itemBoxMeta: ItemMeta = itemBox.getItemMeta
   itemBoxMeta.setDisplayName("§2§lITEM BOX")
   val boxLore = new util.ArrayList[String]()
   boxLore.add("")
