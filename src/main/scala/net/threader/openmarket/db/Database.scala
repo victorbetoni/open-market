@@ -1,13 +1,18 @@
 package net.threader.openmarket.db
 
-import java.io.{BufferedReader, InputStreamReader}
+import net.threader.openmarket.OpenMarket
+
+import java.io.{BufferedReader, File, IOException, InputStreamReader}
 import java.sql.{Connection, DriverManager, SQLException}
 import java.util
 import java.util.{Objects, Properties}
 import scala.concurrent.ExecutionContext
+import java.sql.DriverManager
+import java.sql.SQLException
 
 object Database {
-  var connection: Connection = _
+  var _connection: Connection = _
+  var connection: Connection = if (_connection == null) connect() else _connection
   val props = new Properties()
   implicit val ec: ExecutionContext = ExecutionContext.global
 
@@ -43,13 +48,18 @@ object Database {
     }
   })
 
-  def connect(): Unit = {
+  def connect(): Connection = {
+    val file = new File(OpenMarket.instance.getDataFolder, "database.db")
     try {
-      Class.forName("com.mysql.cj.jdbc.Driver")
-      connection = DriverManager.getConnection(props.getProperty("address"), props.getProperty("user"), props.getProperty("password"))
+      if (!file.exists) file.createNewFile
+      _connection = DriverManager.getConnection("jdbc:sqlite:" + file)
+      return connection
     } catch {
-      case e: Exception => e.printStackTrace()
+      case throwables@(_: SQLException | _: IOException) =>
+        throwables.printStackTrace()
+        OpenMarket.instance.getPluginLoader.disablePlugin(OpenMarket.instance)
     }
+    null
   }
 
 }

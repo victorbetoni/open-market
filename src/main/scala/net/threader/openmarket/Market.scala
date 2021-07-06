@@ -1,7 +1,7 @@
 package net.threader.openmarket
 
 import com.google.common.collect.{ArrayListMultimap, Multimap}
-import net.threader.openmarket.Market.{cached, itemsOwner}
+import net.threader.openmarket.Market.{cached, instance, itemsOwner}
 import net.threader.openmarket.db.Database
 import net.threader.openmarket.model.MarketItem
 import net.threader.openmarket.util.Util
@@ -21,10 +21,6 @@ object Market {
   val cached: mutable.LinkedHashMap[UUID, MarketItem] = mutable.LinkedHashMap[UUID, MarketItem]()
   val itemsOwner: Multimap[UUID, MarketItem] = ArrayListMultimap.create()
   val itemBox: mutable.HashMap[UUID, MarketItem] = mutable.HashMap[UUID, MarketItem]()
-  var instance: Market = _
-}
-
-class Market {
 
   def load(): Unit = {
     cached.clear()

@@ -3,6 +3,7 @@ package net.threader.openmarket
 import net.milkbowl.vault.economy.Economy
 import net.threader.openmarket.OpenMarket.{_economy, _openMarket, log}
 import net.threader.openmarket.command.MarketCommand
+import net.threader.openmarket.db.Database
 import org.bukkit.plugin.java.JavaPlugin
 
 import java.util.logging.Logger
@@ -24,6 +25,8 @@ class OpenMarket extends JavaPlugin {
       getServer.getPluginManager.disablePlugin(this)
       return
     }
+    Database.connect()
+    Market.instance.load()
   }
 
   private def setupEconomy: Boolean = {
