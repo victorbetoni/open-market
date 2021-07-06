@@ -27,7 +27,7 @@ object Market {
       while (rs.next()) {
         val holder = UUID.fromString(rs.getString("holder"))
         val id = UUID.fromString(rs.getString("id"))
-        val itemStack = Util.fromB64(rs.getString("item"))
+        val itemStack = Util.fromB64(rs.getString("item_stack"))
         val date = rs.getDate("expire_at")
         val price = rs.getDouble("price")
         val item = MarketItem(Bukkit.getOfflinePlayer(holder), id, itemStack, price, new Timestamp(date.getTime).toLocalDateTime)
