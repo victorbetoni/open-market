@@ -1,9 +1,9 @@
 package net.threader.openmarket.ui.market
 
-import net.threader.openmarket.OpenMarket
-import net.threader.openmarket.model.MarketItem
+import net.threader.openmarket._
+import net.threader.openmarket.model.{ItemBoxItem, MarketItem}
 import net.threader.openmarket.ui.{GUIItem, SimpleGUI}
-import org.bukkit.Material
+import org.bukkit.{Bukkit, Material, Sound}
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
@@ -16,15 +16,19 @@ case class RemoveItemUI(player: Player, parent: MarketUI, item: MarketItem) {
   meta.setDisplayName("§9§lREMOVER ITEM DO MERCADO")
   val lore = new util.ArrayList[String]()
   lore.add("")
-  lore.add("O item será redirecionado para a sua box")
-  lore.add("de items (báu da página inicial do mercado).")
-  lore.add("Você pode retirá-lo por lá.")
+  lore.add("§7O item será redirecionado para a sua box")
+  lore.add("§7de items (báu da página inicial do mercado).")
+  lore.add("§7Você pode retirá-lo por lá.")
   meta.setLore(lore)
   retrieve.setItemMeta(meta)
 
   val guiItems = new ArrayBuffer[GUIItem]()
   guiItems += GUIItem(13, retrieve, player => {
-    //TODO Send the item to the item box
+    Market.remove(item)
+    ItemBox.add(ItemBoxItem(player, item.id, item.item))
+    player.sendMessage("§aItem enviado para a item box com sucesso!")
+    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f)
+    parent.reopen()
   })
 
   val glassIndexes = Seq(27, 28, 29, 30, 32, 33, 34, 35)

@@ -1,7 +1,7 @@
 package net.threader.openmarket.ui.market
 
-import net.threader.openmarket.{Market, ItemBox}
-import net.threader.openmarket.model.{ItemBoxItem, MarketItem}
+import net.threader.openmarket.ItemBox
+import net.threader.openmarket.model.ItemBoxItem
 import net.threader.openmarket.ui.GUIItem
 import org.bukkit.entity.Player
 

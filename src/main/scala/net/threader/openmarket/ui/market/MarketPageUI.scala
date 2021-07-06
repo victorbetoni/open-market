@@ -1,8 +1,8 @@
 package net.threader.openmarket.ui.market
 
-import net.threader.openmarket.{ItemBox, Market, OpenMarket}
 import net.threader.openmarket.model.{ItemBoxItem, MarketItem, Purchase}
 import net.threader.openmarket.ui.{GUIItem, SimpleGUI}
+import net.threader.openmarket.{ItemBox, OpenMarket}
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack

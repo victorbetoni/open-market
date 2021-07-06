@@ -6,14 +6,12 @@ import net.threader.openmarket.model.MarketItem
 import net.threader.openmarket.util.Util
 import org.bukkit.Bukkit
 
-import java.sql
-import java.sql.{Connection, Date, SQLException, Timestamp}
-import java.time.{LocalDateTime, ZoneId}
+import java.sql.{Connection, SQLException}
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.concurrent.atomic.AtomicBoolean
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicBoolean
 import scala.collection.mutable
-import scala.concurrent.ExecutionContext
 import scala.util.Using
 
 object Market {
@@ -43,15 +41,26 @@ object Market {
     })
   }
 
-  def add(user: UUID, item: MarketItem): Unit = asynConnection { conn =>
-    cached.put(user, item)
+  def add(item: MarketItem): Unit = asynConnection { conn =>
+    cached.put(item.id, item)
     try {
       val statement = conn.prepareStatement("INSERT INTO market_items VALUES (?, ?, ?, ?, ?)")
-      statement.setString(1, user.toString)
+      statement.setString(1, item.seller.getUniqueId.toString)
       statement.setString(2, item.id.toString)
       statement.setString(3, Util.toB64(item.item))
       statement.setDouble(4, item.price)
       statement.setString(5, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").format(item.expireAt))
+      statement.executeUpdate()
+    } catch {
+      case ex: SQLException => ex.printStackTrace()
+    }
+  }
+
+  def remove(item: MarketItem): Unit = asynConnection { conn =>
+    cached.remove(item.id)
+    try {
+      val statement = conn.prepareStatement("DELETE FROM market_items WHERE unique_id=?")
+      statement.setString(1, item.id.toString)
       statement.executeUpdate()
     } catch {
       case ex: SQLException => ex.printStackTrace()

@@ -1,8 +1,8 @@
 package net.threader.openmarket.command
 
-import net.threader.openmarket.{ItemBox, Market}
 import net.threader.openmarket.model.MarketItem
 import net.threader.openmarket.ui.market.MarketUI
+import net.threader.openmarket.{ItemBox, Market}
 import org.bukkit.command.{Command, CommandExecutor, CommandSender}
 import org.bukkit.entity.Player
 import org.bukkit.{Bukkit, Material}
@@ -51,8 +51,12 @@ class MarketCommand extends CommandExecutor {
       }
       val selling = player.getItemInHand
       val value = args.apply(1).toDouble
-      val marketItem = MarketItem(Bukkit.getOfflinePlayer(player.getUniqueId), UUID.randomUUID(), selling, value, LocalDateTime.now().plusWeeks(1), new AtomicBoolean((false)))
-      Market.add(player.getUniqueId, marketItem)
+      Market.add(MarketItem(Bukkit.getOfflinePlayer(player.getUniqueId),
+                  UUID.randomUUID(),
+                  selling,
+                  value,
+                  LocalDateTime.now().plusWeeks(1),
+                  new AtomicBoolean((false))))
       return false
     }
     true

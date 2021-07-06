@@ -2,16 +2,12 @@ package net.threader.openmarket
 
 import com.google.common.collect.{ArrayListMultimap, Multimap}
 import net.threader.openmarket.db.Database
-import net.threader.openmarket.model.{ItemBoxItem, MarketItem}
+import net.threader.openmarket.model.ItemBoxItem
 import net.threader.openmarket.util.Util
-import org.bukkit.{Bukkit, OfflinePlayer}
-import org.bukkit.inventory.ItemStack
+import org.bukkit.Bukkit
 
 import java.sql.Connection
-import java.time.ZoneId
-import java.util.{Date, UUID}
-import scala.collection.mutable
-import scala.concurrent.ExecutionContext
+import java.util.UUID
 import scala.util.Using
 
 object ItemBox {
