@@ -65,5 +65,5 @@ case class PaymentUI(player: Player, parent: MarketUI ,purchase: Purchase) {
   back.setItemMeta(backMeta)
   guiItems += GUIItem(49, back, _ => parent.reopen())
 
-  def open(): Unit = SimpleGUI(OpenMarket.instance, player, "Confirm purchase", 3, ArrayBuffer(confirmItem, GUIItem(13, cancel, p => p.closeInventory()))).openInventory()
+  def open(): Unit = SimpleGUI(OpenMarket.instance, player, "Confirm purchase", 3, guiItems).openInventory()
 }

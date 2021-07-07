@@ -37,7 +37,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
       if(player.getUniqueId.equals(marketItem.seller.getUniqueId)) {
         RemoveItemUI(player, parent, marketItem).open()
       } else {
-        PaymentUI(player, Purchase(player, marketItem)).open()
+        PaymentUI(player, parent, Purchase(player, marketItem)).open()
       }
     })
   }
