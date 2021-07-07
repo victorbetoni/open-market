@@ -12,9 +12,9 @@ import scala.collection.mutable.ArrayBuffer
 
 case class ItemBoxUI(player: Player, parent: MarketUI, items: ArrayBuffer[ItemBoxItem]) {
   val guiItems = new ArrayBuffer[GUIItem]()
-  val index = new AtomicInteger(0)
+  val index = new AtomicInteger(-1)
   items foreach { item =>
-    if(item.available.get() && index.getAndIncrement() < 45) {
+    if(item.available.get() && index.incrementAndGet() < 45) {
       guiItems += GUIItem(index.get(), item.stack, player => {
         val freeSlot = player.getInventory.firstEmpty()
         if(freeSlot != -1) {
