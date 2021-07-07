@@ -8,6 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 import java.util
+import java.util.concurrent.atomic.AtomicBoolean
 import scala.collection.mutable.ArrayBuffer
 
 case class RemoveItemUI(player: Player, parent: MarketUI, item: MarketItem) {
@@ -25,7 +26,7 @@ case class RemoveItemUI(player: Player, parent: MarketUI, item: MarketItem) {
   val guiItems = new ArrayBuffer[GUIItem]()
   guiItems += GUIItem(13, retrieve, player => {
     Market.remove(item)
-    ItemBox.add(ItemBoxItem(player, item.id, item.item))
+    ItemBox.add(ItemBoxItem(player, item.id, item.item, new AtomicBoolean(true)))
     player.sendMessage("§aItem enviado para a item box com sucesso!")
     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f)
     parent.reopen()

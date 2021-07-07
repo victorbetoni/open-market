@@ -8,6 +8,7 @@ import org.bukkit.Bukkit
 
 import java.sql.Connection
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicBoolean
 import scala.util.Using
 
 object ItemBox {
@@ -20,7 +21,7 @@ object ItemBox {
         val holder = Bukkit.getOfflinePlayer(UUID.fromString(rs.getString("holder")))
         val id = UUID.fromString(rs.getString("id"))
         val stack = Util.fromB64(rs.getString("stack"))
-        cached.put(holder.getUniqueId, ItemBoxItem(holder, id, stack))
+        cached.put(holder.getUniqueId, ItemBoxItem(holder, id, stack, new AtomicBoolean((true))))
       }
     }
   }
