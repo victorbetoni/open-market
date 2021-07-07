@@ -1,12 +1,14 @@
 package net.threader.openmarket.ui.market
 
+import net.threader.openmarket.Market.cached
 import net.threader.openmarket.model.{ItemBoxItem, MarketItem, Purchase}
 import net.threader.openmarket.ui.{GUIItem, SimpleGUI}
 import net.threader.openmarket.{ItemBox, OpenMarket}
-import org.bukkit.Material
+import org.bukkit.{Bukkit, Material}
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
+import org.bukkit.inventory.meta.SkullMeta
 
 import java.time.format.DateTimeFormatter
 import java.util
@@ -115,5 +117,18 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
 
   guiItems += GUIItem(26, itemBox, player => ItemBoxUI(player, parent).open())
 
+  val playerItems = new ItemStack(Material.PLAYER_HEAD)
+  val skullMeta: SkullMeta = playerItems.getItemMeta.asInstanceOf[SkullMeta]
+  skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(player.getUniqueId))
+  playerItems.setItemMeta(skullMeta)
+  skullMeta.setDisplayName("§d§lSEUS ITENS")
+  val skullLore = new util.ArrayList[String]()
+  skullLore.add("")
+  skullLore.add("§7Veja seus itens que estão a venda no")
+  skullLore.add("§7mercado de forma simplificada.")
+  skullMeta.setLore(skullLore)
+  playerItems.setItemMeta(skullMeta)
+
+  guiItems += GUIItem(35, playerItems, player => MarketUI(player, 0, _ => cached.values.filter(_.seller.getUniqueId.equals(player.getUniqueId))).reopen())
   def open(): Unit = SimpleGUI(OpenMarket.instance, player, "Mercado interno", 6, guiItems).openInventory()
 }

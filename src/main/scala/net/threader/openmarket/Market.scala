@@ -16,12 +16,9 @@ import scala.util.Using
 
 object Market {
   val cached: mutable.LinkedHashMap[UUID, MarketItem] = mutable.LinkedHashMap[UUID, MarketItem]()
-  val itemsOwner: Multimap[UUID, MarketItem] = ArrayListMultimap.create()
-  cached.values
 
   def load(): Unit = {
     cached.clear()
-    itemsOwner.clear()
     Using(Database.connection.createStatement().executeQuery("SELECT * FROM market_items")) { rs =>
       while (rs.next()) {
         val holder = UUID.fromString(rs.getString("holder"))
@@ -31,7 +28,6 @@ object Market {
         val price = rs.getDouble("price")
         val item = MarketItem(Bukkit.getOfflinePlayer(holder), id, itemStack, price, date, new AtomicBoolean(true))
         cached.put(id, item)
-        itemsOwner.put(holder, item)
       }
     }
   }

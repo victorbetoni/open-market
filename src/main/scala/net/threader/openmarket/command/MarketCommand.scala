@@ -21,7 +21,7 @@ class MarketCommand extends CommandExecutor {
     }
     val player = sender.asInstanceOf[Player]
     if (args.length < 1) {
-      val marketGui = MarketUI(player, 0, Market.cached.values)
+      val marketGui = MarketUI(player, 0, _ => Market.cached.values)
       marketGui.reopen()
       return false
     }

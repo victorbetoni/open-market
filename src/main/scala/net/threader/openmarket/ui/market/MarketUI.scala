@@ -8,13 +8,13 @@ import java.util
 import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.mutable.ArrayBuffer
 
-case class MarketUI(player: Player, initialPage: Int, buildWith: Iterable[MarketItem]) {
+case class MarketUI(player: Player, initialPage: Int, itemSupplier: Unit => Iterable[MarketItem]) {
   val pages = new util.ArrayList[MarketPageUI]()
   val iterator = pages.listIterator(initialPage)
   var currentIndex: Int = initialPage
 
   var items = ArrayBuffer[MarketItem]()
-  buildWith foreach { item =>
+  itemSupplier() foreach { item =>
     val count = new AtomicInteger(0)
     if (count.getAndIncrement() < 28) {
       items += item
@@ -30,6 +30,6 @@ case class MarketUI(player: Player, initialPage: Int, buildWith: Iterable[Market
 
   def reopen(): Unit = {
     player.closeInventory()
-    MarketUI(player, currentIndex, buildWith).openInCurrentIndex()
+    MarketUI(player, currentIndex, itemSupplier).openInCurrentIndex()
   }
 }
