@@ -110,7 +110,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   val itemsInBox = new ArrayBuffer[ItemBoxItem]()
   ItemBox.cached.get(player.getUniqueId).forEach(x => itemsInBox += x)
 
-  guiItems += GUIItem(26, itemBox, player => ItemBoxUI(player, parent, itemsInBox))
+  guiItems += GUIItem(26, itemBox, player => ItemBoxUI(player, parent, itemsInBox).open())
 
   def open(): Unit = SimpleGUI(OpenMarket.instance, player, "Mercado interno", 6, guiItems).openInventory()
 }

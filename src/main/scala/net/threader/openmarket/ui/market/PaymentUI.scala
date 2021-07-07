@@ -3,13 +3,15 @@ package net.threader.openmarket.ui.market
 import net.threader.openmarket.OpenMarket
 import net.threader.openmarket.model.Purchase
 import net.threader.openmarket.ui.{GUIItem, SimpleGUI}
+import net.threader.openmarket.ui.market.MarketUI
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.{Material, Sound}
 
 import scala.collection.mutable.ArrayBuffer
 
-case class PaymentUI(player: Player, purchase: Purchase) {
+case class PaymentUI(player: Player, parent: MarketUI ,purchase: Purchase) {
+  val guiItems = ArrayBuffer[GUIItem]()
   val seller = purchase.item.seller
   val confirm = new ItemStack(Material.LIME_TERRACOTTA)
   val meta = confirm.getItemMeta
@@ -32,7 +34,7 @@ case class PaymentUI(player: Player, purchase: Purchase) {
   cMeta.setLore(cLore)
   cancel.setItemMeta(cMeta)
 
-  val confirmItem = GUIItem(11, confirm, player => {
+  guiItems += GUIItem(12, confirm, player => {
     val result = purchase.perform()
     if (result._1) {
       player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f)
@@ -45,6 +47,23 @@ case class PaymentUI(player: Player, purchase: Purchase) {
     }
     player.sendMessage(result._2)
   })
+
+  guiItems += GUIItem(14, cancel, _.closeInventory())
+
+  val glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE)
+  val glassMeta = glass.getItemMeta
+  glassMeta.setDisplayName(" ")
+  glass.setItemMeta(glassMeta)
+
+  val glassIndexes = Seq(27, 28, 29, 30, 32, 33, 34, 35)
+
+  for(index <- glassIndexes) guiItems += GUIItem(index, glass.clone(), _ => {})
+
+  val back = new ItemStack(Material.NETHER_BRICK_SLAB)
+  val backMeta = back.getItemMeta
+  backMeta.setDisplayName("§c§lRETORNAR")
+  back.setItemMeta(backMeta)
+  guiItems += GUIItem(49, back, _ => parent.reopen())
 
   def open(): Unit = SimpleGUI(OpenMarket.instance, player, "Confirm purchase", 3, ArrayBuffer(confirmItem, GUIItem(13, cancel, p => p.closeInventory()))).openInventory()
 }

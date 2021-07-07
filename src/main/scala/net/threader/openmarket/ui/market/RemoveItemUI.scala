@@ -35,7 +35,7 @@ case class RemoveItemUI(player: Player, parent: MarketUI, item: MarketItem) {
 
   val glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE)
   val glassMeta = glass.getItemMeta
-  glassMeta.setDisplayName("")
+  glassMeta.setDisplayName(" ")
   glass.setItemMeta(glassMeta)
 
   for(index <- glassIndexes) guiItems += GUIItem(index, glass.clone(), _ => {})
