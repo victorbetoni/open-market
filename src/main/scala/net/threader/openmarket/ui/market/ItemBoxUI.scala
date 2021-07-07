@@ -21,7 +21,8 @@ case class ItemBoxUI(player: Player, parent: MarketUI) {
           player.getInventory.setItem(freeSlot, item.stack)
           ItemBox.remove(item)
           item.available.set(false)
-          parent.reopen()
+          player.closeInventory()
+          ItemBoxUI(player, parent).open()
         } else {
           player.sendMessage("§cVocê não tem nenhum slot livre no inventário.")
         }
