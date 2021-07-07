@@ -35,35 +35,40 @@ object Market {
     }
   }
 
-  def asynConnection(block: Connection => Unit): Unit = {
+  def asyncConnection(block: Connection => Unit): Unit = {
     Bukkit.getScheduler.runTaskAsynchronously(OpenMarket.instance, new Runnable {
       override def run(): Unit = block(Database.connection)
     })
   }
 
-  def add(item: MarketItem): Unit = asynConnection { conn =>
+  def add(item: MarketItem): Unit = {
     cached.put(item.id, item)
-    try {
-      val statement = conn.prepareStatement("INSERT INTO market_items VALUES (?, ?, ?, ?, ?)")
-      statement.setString(1, item.seller.getUniqueId.toString)
-      statement.setString(2, item.id.toString)
-      statement.setString(3, Util.toB64(item.item))
-      statement.setDouble(4, item.price)
-      statement.setString(5, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").format(item.expireAt))
-      statement.executeUpdate()
-    } catch {
-      case ex: SQLException => ex.printStackTrace()
+    asyncConnection { conn =>
+      try {
+        val statement = conn.prepareStatement("INSERT INTO market_items VALUES (?, ?, ?, ?, ?)")
+        statement.setString(1, item.seller.getUniqueId.toString)
+        statement.setString(2, item.id.toString)
+        statement.setString(3, Util.toB64(item.item))
+        statement.setDouble(4, item.price)
+        statement.setString(5, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm").format(item.expireAt))
+        statement.executeUpdate()
+      } catch {
+        case ex: SQLException => ex.printStackTrace()
+      }
     }
   }
 
-  def remove(item: MarketItem): Unit = asynConnection { conn =>
+
+  def remove(item: MarketItem): Unit = {
     cached.remove(item.id)
-    try {
-      val statement = conn.prepareStatement("DELETE FROM market_items WHERE unique_id=?")
-      statement.setString(1, item.id.toString)
-      statement.executeUpdate()
-    } catch {
-      case ex: SQLException => ex.printStackTrace()
+    asyncConnection { conn =>
+      try {
+        val statement = conn.prepareStatement("DELETE FROM market_items WHERE unique_id=?")
+        statement.setString(1, item.id.toString)
+        statement.executeUpdate()
+      } catch {
+        case ex: SQLException => ex.printStackTrace()
+      }
     }
   }
 }

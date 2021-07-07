@@ -26,25 +26,30 @@ object ItemBox {
     }
   }
 
-  def add(item: ItemBoxItem): Unit = asynConnection { conn =>
+  def add(item: ItemBoxItem): Unit = {
     cached.put(item.holder.getUniqueId, item)
-    Using(conn.prepareStatement("INSERT INTO item_box VALUES (?, ?, ?)")) { statement =>
-      statement.setString(1, item.holder.getUniqueId.toString)
-      statement.setString(2, item.id.toString)
-      statement.setString(3, Util.toB64(item.stack))
-      statement.executeUpdate()
+    asyncConnection { conn =>
+      Using(conn.prepareStatement("INSERT INTO item_box VALUES (?, ?, ?)")) { statement =>
+        statement.setString(1, item.holder.getUniqueId.toString)
+        statement.setString(2, item.id.toString)
+        statement.setString(3, Util.toB64(item.stack))
+        statement.executeUpdate()
+      }
     }
   }
 
-  def remove(item: ItemBoxItem): Unit = asynConnection { conn =>
+  def remove(item: ItemBoxItem): Unit = {
     cached.remove(item.holder.getUniqueId, item)
-    Using(conn.prepareStatement("DELETE FROM item_box WHERE id=?")) { statement =>
-      statement.setString(1, item.id.toString)
-      statement.executeUpdate()
+    asyncConnection { conn =>
+      Using(conn.prepareStatement("DELETE FROM item_box WHERE id=?")) { statement =>
+        statement.setString(1, item.id.toString)
+        statement.executeUpdate()
+      }
     }
   }
 
-  def asynConnection(block: Connection => Unit): Unit = {
+
+  def asyncConnection(block: Connection => Unit): Unit = {
     Bukkit.getScheduler.runTaskAsynchronously(OpenMarket.instance, new Runnable {
       override def run(): Unit = block(Database.connection)
     })
