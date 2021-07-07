@@ -112,10 +112,8 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   boxLore.add("§7de colocar algum item a venda.")
   itemBoxMeta.setLore(boxLore)
   itemBox.setItemMeta(itemBoxMeta)
-  val itemsInBox = new ArrayBuffer[ItemBoxItem]()
-  ItemBox.cached.get(player.getUniqueId).forEach(x => itemsInBox += x)
 
-  guiItems += GUIItem(26, itemBox, player => ItemBoxUI(player, parent, itemsInBox).open())
+  guiItems += GUIItem(26, itemBox, player => ItemBoxUI(player, parent).open())
 
   def open(): Unit = SimpleGUI(OpenMarket.instance, player, "Mercado interno", 6, guiItems).openInventory()
 }

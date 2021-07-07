@@ -10,10 +10,10 @@ import org.bukkit.inventory.ItemStack
 import java.util.concurrent.atomic.AtomicInteger
 import scala.collection.mutable.ArrayBuffer
 
-case class ItemBoxUI(player: Player, parent: MarketUI, items: ArrayBuffer[ItemBoxItem]) {
+case class ItemBoxUI(player: Player, parent: MarketUI) {
   val guiItems = new ArrayBuffer[GUIItem]()
   val index = new AtomicInteger(-1)
-  items foreach { item =>
+  ItemBox.cached.get(player.getUniqueId) forEach { item =>
     if(item.available.get() && index.incrementAndGet() < 45) {
       guiItems += GUIItem(index.get(), item.stack, player => {
         val freeSlot = player.getInventory.firstEmpty()
