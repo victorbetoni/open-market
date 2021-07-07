@@ -5,6 +5,7 @@ import net.threader.openmarket.ui.market.MarketUI
 import net.threader.openmarket.{ItemBox, Market}
 import org.bukkit.command.{Command, CommandExecutor, CommandSender}
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import org.bukkit.{Bukkit, Material}
 
 import java.time.LocalDateTime
@@ -51,7 +52,7 @@ class MarketCommand extends CommandExecutor {
       }
       val selling = player.getItemInHand
       val value = args.apply(1).toDouble
-      player.getItemInHand.setType(Material.AIR)
+      player.setItemInHand(new ItemStack(Material.AIR))
       Market.add(MarketItem(Bukkit.getOfflinePlayer(player.getUniqueId),
                   UUID.randomUUID(),
                   selling,
