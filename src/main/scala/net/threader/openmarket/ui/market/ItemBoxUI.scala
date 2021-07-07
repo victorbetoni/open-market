@@ -41,7 +41,7 @@ case class ItemBoxUI(player: Player, parent: MarketUI, items: ArrayBuffer[ItemBo
   val backMeta = back.getItemMeta
   backMeta.setDisplayName("§c§lRETORNAR")
   back.setItemMeta(backMeta)
-  guiItems += GUIItem(49, back, _ => parent.openInCurrentIndex())
+  guiItems += GUIItem(49, back, _ => parent.reopen())
 
   def open(): Unit = SimpleGUI(OpenMarket.instance, player, "Item Box", 6, guiItems).openInventory()
 }
