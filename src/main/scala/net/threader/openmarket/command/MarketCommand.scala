@@ -51,6 +51,7 @@ class MarketCommand extends CommandExecutor {
       }
       val selling = player.getItemInHand
       val value = args.apply(1).toDouble
+      player.getItemInHand.setType(Material.AIR)
       Market.add(MarketItem(Bukkit.getOfflinePlayer(player.getUniqueId),
                   UUID.randomUUID(),
                   selling,
