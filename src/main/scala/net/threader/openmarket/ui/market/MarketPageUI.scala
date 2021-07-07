@@ -34,7 +34,10 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
     meta.setLore(lore)
     clonedStack.setItemMeta(meta)
     guiItems += GUIItem(index, clonedStack, player => {
-      if(player.getUniqueId.equals(marketItem.seller.getUniqueId)) {
+      if(!marketItem.available.get()) {
+        player.sendMessage("§cEsse item não está mais no mercado.")
+        parent.reopen()
+      } else if(player.getUniqueId.equals(marketItem.seller.getUniqueId)) {
         RemoveItemUI(player, parent, marketItem).open()
       } else {
         PaymentUI(player, parent, Purchase(player, marketItem)).open()

@@ -7,4 +7,4 @@ import java.time.LocalDateTime
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 
-case class MarketItem(seller: OfflinePlayer, id: UUID, item: ItemStack, price: Double, expireAt: LocalDateTime, sold: AtomicBoolean)
+case class MarketItem(seller: OfflinePlayer, id: UUID, item: ItemStack, price: Double, expireAt: LocalDateTime, available: AtomicBoolean)
