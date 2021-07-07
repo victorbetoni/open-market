@@ -58,7 +58,7 @@ class MarketCommand extends CommandExecutor {
                   selling,
                   value,
                   LocalDateTime.now().plusWeeks(1),
-                  new AtomicBoolean((false))))
+                  new AtomicBoolean(true)))
       return false
     }
     true

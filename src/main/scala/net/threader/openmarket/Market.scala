@@ -28,7 +28,7 @@ object Market {
         val itemStack = Util.fromB64(rs.getString("item_stack"))
         val date = LocalDateTime.parse(rs.getString("expire_at"), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))
         val price = rs.getDouble("price")
-        val item = MarketItem(Bukkit.getOfflinePlayer(holder), id, itemStack, price, date, new AtomicBoolean(false))
+        val item = MarketItem(Bukkit.getOfflinePlayer(holder), id, itemStack, price, date, new AtomicBoolean(true))
         cached.put(id, item)
         itemsOwner.put(holder, item)
       }
