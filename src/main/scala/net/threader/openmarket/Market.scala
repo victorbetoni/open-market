@@ -17,6 +17,7 @@ import scala.util.Using
 object Market {
   val cached: mutable.LinkedHashMap[UUID, MarketItem] = mutable.LinkedHashMap[UUID, MarketItem]()
   val itemsOwner: Multimap[UUID, MarketItem] = ArrayListMultimap.create()
+  cached.values
 
   def load(): Unit = {
     cached.clear()
