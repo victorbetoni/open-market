@@ -23,26 +23,28 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   val itemIterator: Iterator[Int] = itemIndexes.iterator
 
   items foreach { marketItem =>
-    val index = itemIterator.next()
-    val clonedStack = marketItem.item.clone()
-    val meta = clonedStack.getItemMeta
-    val lore = if (meta.hasLore) meta.getLore else new util.ArrayList[String]()
-    lore.add("")
-    lore.add("§7Preço: §a$" + marketItem.price)
-    lore.add(s"§7Sendo vendido por: §a${marketItem.seller.getName}")
-    lore.add(s"§7Expira em: §a${DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").format(marketItem.expireAt)}h")
-    meta.setLore(lore)
-    clonedStack.setItemMeta(meta)
-    guiItems += GUIItem(index, clonedStack, player => {
-      if(!marketItem.available.get()) {
-        player.sendMessage("§cEsse item não está mais no mercado.")
-        parent.reopen()
-      } else if(player.getUniqueId.equals(marketItem.seller.getUniqueId)) {
-        RemoveItemUI(player, parent, marketItem).open()
-      } else {
-        PaymentUI(player, parent, Purchase(player, marketItem)).open()
-      }
-    })
+    if(marketItem.available.get()) {
+      val index = itemIterator.next()
+      val clonedStack = marketItem.item.clone()
+      val meta = clonedStack.getItemMeta
+      val lore = if (meta.hasLore) meta.getLore else new util.ArrayList[String]()
+      lore.add("")
+      lore.add("§7Preço: §a$" + marketItem.price)
+      lore.add(s"§7Sendo vendido por: §a${marketItem.seller.getName}")
+      lore.add(s"§7Expira em: §a${DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").format(marketItem.expireAt)}h")
+      meta.setLore(lore)
+      clonedStack.setItemMeta(meta)
+      guiItems += GUIItem(index, clonedStack, player => {
+        if(!marketItem.available.get()) {
+          player.sendMessage("§cEsse item não está mais no mercado.")
+          parent.reopen()
+        } else if(player.getUniqueId.equals(marketItem.seller.getUniqueId)) {
+          RemoveItemUI(player, parent, marketItem).open()
+        } else {
+          PaymentUI(player, parent, Purchase(player, marketItem)).open()
+        }
+      })
+    }
   }
 
   val glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE)
