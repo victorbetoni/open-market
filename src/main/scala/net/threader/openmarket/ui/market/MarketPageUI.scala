@@ -24,7 +24,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
                         37, 38, 39, 40, 41, 42, 43)
   val itemIterator: Iterator[Int] = itemIndexes.iterator
 
-  items foreach { marketItem =>
+  items.foreach(marketItem => {
     if(marketItem.available.get()) {
       val index = itemIterator.next()
       val clonedStack = marketItem.item.clone()
@@ -47,7 +47,7 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
         }
       })
     }
-  }
+  })
 
   val glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE)
   val glassMeta: ItemMeta = glass.getItemMeta

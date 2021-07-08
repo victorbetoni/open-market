@@ -13,7 +13,7 @@ import scala.collection.mutable.ArrayBuffer
 case class ItemBoxUI(player: Player, parent: MarketUI) {
   val guiItems = new ArrayBuffer[GUIItem]()
   val index = new AtomicInteger(-1)
-  ItemBox.cached.get(player.getUniqueId) forEach { item =>
+  ItemBox.cached.get(player.getUniqueId).forEach(item => {
     if(item.available.get() && index.incrementAndGet() < 45) {
       guiItems += GUIItem(index.get(), item.stack, player => {
         val freeSlot = player.getInventory.firstEmpty()
@@ -28,7 +28,7 @@ case class ItemBoxUI(player: Player, parent: MarketUI) {
         }
       })
     }
-  }
+  })
 
   val glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE)
   val glassMeta = glass.getItemMeta
