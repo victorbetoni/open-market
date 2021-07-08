@@ -1,7 +1,7 @@
 package net.threader.openmarket
 
 import net.milkbowl.vault.economy.Economy
-import net.threader.openmarket.OpenMarket.log
+import net.threader.openmarket.OpenMarket.{issues, log}
 import net.threader.openmarket.command.MarketCommand
 import net.threader.openmarket.db.Database
 import net.threader.openmarket.model.{ItemBoxItem, MarketItem}
@@ -11,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin
 
 import java.time.{LocalDate, LocalDateTime}
 import java.util.concurrent.atomic.AtomicBoolean
-import java.util.logging.Logger
+import java.util.logging.{Level, Logger}
 import scala.collection.mutable.ArrayBuffer
 
 object OpenMarket {
@@ -35,9 +35,11 @@ class OpenMarket extends JavaPlugin {
       getServer.getPluginManager.disablePlugin(this)
       return
     }
+
     Database.connect()
     Market.load()
     ItemBox.load()
+
     Bukkit.getScheduler.runTaskTimer(this, new Runnable {
       override def run(): Unit = {
         val remove = ArrayBuffer[MarketItem]()
@@ -57,6 +59,16 @@ class OpenMarket extends JavaPlugin {
         })
       }
     }, 20, 200)
+
+    Bukkit.getScheduler.scheduleSyncDelayedTask(this, new Runnable {
+      override def run(): Unit = {
+        println("")
+        log.log(Level.INFO, s"[${getDescription.getName}] - Obrigado por usar o OpenMarket!")
+        log.log(Level.INFO, s"[${getDescription.getName}] - Feito com <3 por ${getDescription.getAuthors.get(0)}!")
+        log.log(Level.INFO, s"[${getDescription.getName}] - Reporte bugs em: $issues")
+        println("")
+      }
+    })
   }
 
   private def setupEconomy: Boolean = {
