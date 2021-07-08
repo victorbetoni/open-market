@@ -26,7 +26,14 @@ case class MarketUI(player: Player, initialPage: Int, itemSupplier: Unit => Iter
   }
   pages.add(MarketPageUI(player, this, items))
 
-  def openCurrentPage(): Unit = pages.get(currentIndex.get()).open()
+  def openCurrentPage(): Unit = {
+    if(currentIndex.get() > pages.size() - 1) {
+      currentIndex.decrementAndGet()
+      openCurrentPage()
+    } else {
+      pages.get(currentIndex.get()).open()
+    }
+  }
 
   def reopen(): Unit = {
     player.closeInventory()
