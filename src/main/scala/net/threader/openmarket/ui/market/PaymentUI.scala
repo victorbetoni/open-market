@@ -1,6 +1,6 @@
 package net.threader.openmarket.ui.market
 
-import net.threader.openmarket.OpenMarket
+import net.threader.openmarket.{ItemBox, OpenMarket}
 import net.threader.openmarket.model.Purchase
 import net.threader.openmarket.ui.{GUIItem, SimpleGUI}
 import net.threader.openmarket.ui.market.MarketUI
@@ -35,17 +35,24 @@ case class PaymentUI(player: Player, parent: MarketUI ,purchase: Purchase) {
   cancel.setItemMeta(cMeta)
 
   guiItems += GUIItem(12, confirm, player => {
-    val result = purchase.perform()
-    if (result._1) {
-      player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f)
-      if (seller.isOnline) {
-        seller.getPlayer.playSound(seller.getPlayer.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f)
-        seller.getPlayer.sendMessage(s"§a${player.getName} comprou seu(a) ${purchase.item.item.getItemMeta.getDisplayName}!")
+    val freeSlot = player.getInventory.firstEmpty()
+    if(freeSlot != -1) {
+      val result = purchase.perform()
+      if (result._1) {
+        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f)
+        if (seller.isOnline) {
+          seller.getPlayer.playSound(seller.getPlayer.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f)
+          seller.getPlayer.sendMessage(s"§a${player.getName} comprou seu(a) ${purchase.item.item.getItemMeta.getDisplayName}!")
+        }
+        player.getInventory.setItem(freeSlot, purchase.item.item)
+        player.sendMessage("§aCompra efetuada!")
+      } else {
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f)
       }
     } else {
-      player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f)
+      player.sendMessage("§cVocê não tem nenhum slot livre no inventário.")
     }
-    player.sendMessage(result._2)
+    parent.reopen()
   })
 
   guiItems += GUIItem(14, cancel, _.closeInventory())
