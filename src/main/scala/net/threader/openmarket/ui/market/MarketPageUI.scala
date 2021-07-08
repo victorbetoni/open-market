@@ -62,11 +62,11 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   previous.setItemMeta(previousMeta)
 
   guiItems += GUIItem(48, previous, player => {
-    if(parent.iterator.hasPrevious) {
-      parent.currentIndex = parent.iterator.previousIndex()
+    if(parent.currentIndex.get() - 1 > -1) {
+      parent.currentIndex.decrementAndGet()
       parent.reopen()
     } else {
-      player.sendMessage("§cNenhuma pagina encontrada")
+      player.sendMessage("§cNenhuma pagina encontrada.")
     }
   })
 
@@ -76,11 +76,11 @@ case class MarketPageUI(player: Player, parent: MarketUI, items: ArrayBuffer[Mar
   next.setItemMeta(nextMeta)
 
   guiItems += GUIItem(50, next, player => {
-    if(parent.iterator.hasNext) {
-      parent.currentIndex = parent.iterator.nextIndex()
+    if(parent.currentIndex.get() + 1 <= parent.pages.size() - 1) {
+      parent.currentIndex.incrementAndGet()
       parent.reopen()
     } else {
-      player.sendMessage("§cNenhuma pagina encontrada")
+      player.sendMessage("§cNenhuma pagina encontrada.")
     }
   })
 

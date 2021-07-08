@@ -10,8 +10,7 @@ import scala.collection.mutable.ArrayBuffer
 
 case class MarketUI(player: Player, initialPage: Int, itemSupplier: Unit => Iterable[MarketItem]) {
   val pages = new util.ArrayList[MarketPageUI]()
-  val iterator = pages.listIterator(initialPage)
-  var currentIndex: Int = initialPage
+  val currentIndex = new AtomicInteger(initialPage)
 
   var items = ArrayBuffer[MarketItem]()
   val count = new AtomicInteger(0)
@@ -27,10 +26,10 @@ case class MarketUI(player: Player, initialPage: Int, itemSupplier: Unit => Iter
   }
   pages.add(MarketPageUI(player, this, items))
 
-  def openInCurrentIndex(): Unit = pages.get(currentIndex).open()
+  def openCurrentPage(): Unit = pages.get(currentIndex.get()).open()
 
   def reopen(): Unit = {
     player.closeInventory()
-    MarketUI(player, currentIndex, itemSupplier).openInCurrentIndex()
+    MarketUI(player, currentIndex.get(), itemSupplier).openCurrentPage()
   }
 }
