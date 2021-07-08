@@ -34,10 +34,10 @@ class MarketCommand extends CommandExecutor {
         player.sendMessage("§eEsvazie sua item box do mercado antes de vender algo!")
         return false
       }
-      if(Market.cached.values.count(_.seller.getUniqueId.equals(player.getUniqueId)) >= 20) {
+      /*if(Market.cached.values.count(_.seller.getUniqueId.equals(player.getUniqueId)) >= 60) {
         player.sendMessage("§eVocê atingiu o número máximo de itens no mercado (20). Retire alguns ou espere que eles expirem.")
         return false
-      }
+      }*/
       if(args.length < 2) {
         player.sendMessage("§cSintaxe: /mercado vender <preço>")
         return false

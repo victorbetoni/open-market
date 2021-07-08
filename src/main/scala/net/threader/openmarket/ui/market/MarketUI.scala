@@ -14,14 +14,15 @@ case class MarketUI(player: Player, initialPage: Int, itemSupplier: Unit => Iter
   var currentIndex: Int = initialPage
 
   var items = ArrayBuffer[MarketItem]()
+  val count = new AtomicInteger(0)
   itemSupplier() foreach { item =>
-    val count = new AtomicInteger(0)
-    if (count.getAndIncrement() < 28) {
+    if (count.incrementAndGet() <= 28) {
       items += item
     } else {
-      count.set(0)
+      count.set(1)
       pages.add(MarketPageUI(player, this, items))
       items = new ArrayBuffer[MarketItem]()
+      items += item
     }
   }
   pages.add(MarketPageUI(player, this, items))
